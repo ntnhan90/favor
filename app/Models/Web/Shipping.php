@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shipping extends Model
 {
-
     public function addMyAddress($request)
     {
-
         $customers_id = auth()->user()->id;
         $entry_firstname = $request->entry_firstname;
         $entry_lastname = $request->entry_lastname;
@@ -54,7 +52,6 @@ class Shipping extends Model
     //get all customer addresses url
     public function getShippingAddress($address_id)
     {
-
         $addresses = DB::table('user_to_address')
             ->leftjoin('address_book', 'user_to_address.address_book_id', '=', 'address_book.address_book_id')
             ->leftJoin('countries', 'countries.countries_id', '=', 'address_book.entry_country_id')
@@ -108,7 +105,6 @@ class Shipping extends Model
 
         $getZones = $zones->get();
         return $getZones;
-
     }
 
     public function updateAddressBook($address_book_data, $address_book_id)

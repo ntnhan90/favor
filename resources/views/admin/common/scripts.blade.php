@@ -48,68 +48,60 @@
 
 <script type="text/javascript">
 $(function() {
-$("img").click(function() {
-    $(this).toggleClass("hover");
-      var id = [];
-    $(".hover").each(function() {
-    //jQuery.each('.hover', function() {
-      id.push(jQuery(this).attr("image_id"));
+	$("img").click(function() {
+    	$(this).toggleClass("hover");
+      	var id = [];
+    	$(".hover").each(function() {
+      		id.push(jQuery(this).attr("image_id"));
+    	});
+    	jQuery('#images').val(id);
+		console.log(id);
+ 	});
 
-    });
-  //  id.push(jQuery('.test_image').attr("image_id"));
-    jQuery('#images').val(id);
-	console.log(id);
-  });
-
-  $("#btn").click(function() {
-	if (confirm('Are You Sure To Delete This?')) {
-		var imgs = $("img.hover").length;
-		var parentFrom = $('#images_form');
-		var formData = parentFrom.serialize();
-		console.log(imgs);
-		if(imgs>0){
-			$.ajax({
-			url: '{{ URL::to("admin/media/delete")}}',
-			type: "POST",
-			data: formData,
-			success: function (res) {
-					if(res == 'success'){
-						location.reload();
-					}
-				},
-			});
-		}else{
-			alert('Please choose image first.');	
+  	$("#btn").click(function() {
+		if (confirm('Are You Sure To Delete This?')) {
+			var imgs = $("img.hover").length;
+			var parentFrom = $('#images_form');
+			var formData = parentFrom.serialize();
+			console.log(imgs);
+			if(imgs>0){
+				$.ajax({
+					url: '{{ URL::to("admin/media/delete")}}',
+					type: "POST",
+					data: formData,
+					success: function (res) {
+							if(res == 'success'){
+								location.reload();
+							}
+						},
+					});
+				}else{
+					alert('Please choose image first.');	
+				}
+			} else {
 		}
-	} else {
-		// Do nothing!
-	}
-  });
+  	});
 
-  jQuery("#btn11").click(function() {
-    var images =  '<?php echo $images; ?>';
-    var all_images = JSON.parse(images);
-    jQuery.each(all_images, function() {
-      jQuery('.test_image').addClass("hover");
+  	jQuery("#btn11").click(function() {
+    	var images =  '<?php echo $images; ?>';
+    	var all_images = JSON.parse(images);
+    	jQuery.each(all_images, function() {
+      		jQuery('.test_image').addClass("hover");
+    	});
+    	var id = [];
+    	$(".hover").each(function() {
+      		id.push(jQuery(this).attr("image_id"));
+    	});
+    	jQuery('#images').val(id);
+  	});
 
-    });
-    var id = [];
-    $(".hover").each(function() {
-      id.push(jQuery(this).attr("image_id"));
-
-    });
-    jQuery('#images').val(id);
-
-  });
-
-  jQuery("#btn12").click(function() {
-    var images =  '<?php echo $images; ?>';
-    var all_images = JSON.parse(images);
-    jQuery.each(all_images, function() {
-      jQuery('.test_image').removeClass("hover");
-
-    });
-  });
+  	jQuery("#btn12").click(function() {
+    	var images =  '<?php echo $images; ?>';
+    	var all_images = JSON.parse(images);
+    	jQuery.each(all_images, function() {
+	      	jQuery('.test_image').removeClass("hover");
+	    });
+  	});
 });
 
 
@@ -144,7 +136,6 @@ jQuery( document ).ready(function() {
     showLoginImage();
 	showNewsImage();
 	$('#loader').hide();	
-
 });
 
 function showCartImage(){

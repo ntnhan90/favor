@@ -51,10 +51,10 @@
 					<div class="u-block mr_settings_shipping u-padding-t--none">
 						<table class="mr_ship_edit shopping-bag u-margin-t--none">
 							<tbody>
+								@foreach ($result['address'] as $address)
 								<tr class="shopping-bag__row">
 									<td class="shopping-bag__row-item">
 										<div class="g g--collapse">
-											@foreach ($result['address'] as $address)
 											<div class="gc n-6-of-12 u-padding-b--none">
 												<div class="g">
 													
@@ -74,20 +74,20 @@
 												</div>
 												<div><a class="js-modal link remove_a" href="#remove_shipping" data-type="small" data-address-id="58432916">Remove </a></div>
 											</div>
-											@endforeach
 										</div>
 									</td>
 								</tr>
+								@endforeach
 							</tbody>
 						</table>
 
 						<input type="submit" value="Add New Address" class="co_cta btn btn--md" id="add_new_address">
 
-						<div class="main-form">
-              				<form name="addMyAddress" class="form-validate" enctype="multipart/form-data" action="@if(!empty($result['editAddress'])){{ URL::to('/update-address')}}@else{{ URL::to('/profile/addAddress')}}@endif" method="post">
-                				<input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}" />
+						<div class="main-form" style="padding:15px 0">
+              				<form name="addMyAddress" class="form-validate" enctype="multipart/form-data" action="@if(!empty($result['editAddress'])){{ URL::to('/profile/update-address')}}@else{{ URL::to('/profile/addAddress')}}@endif" method="post">
+                				<input type="hidden" name="_token" id="csrf-token" value="{{ csrf_token() }}" class="field__input"/>
                 				@if(!empty($result['editAddress']))
-				                <input type="hidden" name="address_book_id" value="{{$result['editAddress'][0]->address_id}}">
+				                <input type="hidden" class="field__input" name="address_book_id" value="{{$result['editAddress'][0]->address_id}}">
 				                @endif
 				                @if( count($errors) > 0)
 			                    @foreach($errors->all() as $error)
@@ -101,41 +101,43 @@
                                 <div class="form-row">
 						            <div class="form-group col-md-6">
 						                <label for="inputfirstname"><span class="star">*</span>First Name</label>
-						                <input type="text" name="entry_firstname" class="form-control field-validate" id="entry1_firstname" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->firstname}}" @endif>
+						                <input type="text" name="entry_firstname" class="form-control field-validate field__input" id="entry1_firstname" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->firstname}}" @endif>
 						                <span class="help-block error-content7" hidden="">Please enter your first name</span>
 						            </div>
 						            <div class="form-group col-md-6">
 						            	<label for="inputlastname">Last Name</label>
-						            	<input type="text" name="entry_lastname" class="form-control field-validate" rid="entry1_lastname" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->lastname}}" @endif>
+						            	<input type="text" name="entry_lastname" class="form-control field-validate field__input" rid="entry1_lastname" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->lastname}}" @endif>
 						            	<span class="help-block error-content7" hidden="">Please enter your address.</span>       
 						            </div>
 						        </div>
+						        
 						        <div class="form-row">
 						            <div class="form-group col-md-6">
 						                <label for="inputcomapnyname"><span class="star">*</span>Address</label>
-						                <input type="text" name="entry_street_address"  class="form-control field-validate" id="entry1_street_address" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->street}}" @endif>
+						                <input type="text" name="entry_street_address"  class="form-control field-validate field__input" id="entry1_street_address" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->street}}" @endif>
 						                      	<span class="help-block error-content7" hidden="">Please enter your address.</span>
 						        	</div>
-						            <select name="entry_country_id"  onChange="getZones();" id="entry_country_id" class="form-control field-validate">
-			                          	<option value="">select Country</option>
-			                          	@foreach($result['countries'] as $countries)
-			                          	<option value="{{$countries->countries_id}}" @if(!empty($result['editAddress'])) @if($countries->countries_id==$result['editAddress'][0]->countries_id) selected @endif @endif>{{$countries->countries_name}}</option>
-			                          	@endforeach
-			                      	</select>
 						        </div>
 						        <div class="form-row">
 						            <div class="form-group select-control col-md-6">
 						             	<label for="inputState"><span class="star">*</span> City</label>
-						                <input type="text" name="entry_city"  class="form-control field-validate" id="entry_city1" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->city}}" @endif>
+						                <input type="text" name="entry_city"  class="form-control field-validate field__input" id="entry_city1" @if(!empty($result['editAddress'])) value="{{$result['editAddress'][0]->city}}" @endif>
 						                <span class="help-block error-content7" hidden="">Please enter your city.</span>
 						            </div>
 						        </div>
+
+						       	<select name="entry_country_id"  onChange="getZones();" id="entry_country_id" class="form-control field-validate">
+			                          	<option value="">select Country</option>
+			                          	@foreach($result['countries'] as $countries)
+			                          	<option value="{{$countries->countries_id}}" @if(!empty($result['editAddress'])) @if($countries->countries_id==$result['editAddress'][0]->countries_id) selected @endif @endif>{{$countries->countries_name}}</option>
+			                          	@endforeach
+			                    </select>
 	                 
 							    <div class="button">
 				                  	@if(!empty($result['editAddress']))
-				                      <a href="{{ URL::to('/shipping-address')}}" class="btn btn-default">@lang('website.cancel')</a>
+				                      <a href="{{ URL::to('/shipping-address')}}" class="btn btn-default">cancel</a>
 				                  	@endif
-				                      <button type="submit" class="btn btn-secondary swipe-to-top">@if(!empty($result['editAddress']))  Update  @else Add Address @endif </button>
+				                      <button type="submit" class="co_cta btn btn--md">@if(!empty($result['editAddress']))  Update  @else Add Address @endif </button>
 				                </div>
 					        </form>
 					    </div>

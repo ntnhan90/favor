@@ -10,18 +10,14 @@ use Image;
 
 class Images extends Model
 {
-    //
-use Sortable;
-public $sortable =['id','name'];
+    use Sortable;
+    public $sortable =['id','name'];
 
     public function image_category(){
-
         return $this->hasMany('App\Image_category');
     }
 
     public function getimages(){
-
-
        $allimagesth = DB::table('images')
             ->leftJoin('image_categories', 'images.id', '=', 'image_categories.image_id')
             ->select('path','images.id','image_type')
@@ -37,25 +33,17 @@ public $sortable =['id','name'];
             ->get();
 
          $result =$allimages->merge($allimagesth)->keyBy('id');
-
        return $result;
-
     }
 
-
     public function getimagedetail($id){
-
         $imagesdetail = DB::table('images')
             ->leftJoin('image_categories', 'images.id', '=', 'image_categories.image_id')
             ->where('images.id',$id)
             ->get();
 
         return $imagesdetail;
-
-
-
     }
-
 
     public function imagedata($filename, $Path, $width, $height, $user_id = null){
 
@@ -76,7 +64,6 @@ public $sortable =['id','name'];
             ['image_id' => $image_id, 'image_type' => '1', 'height' =>$height,'width' =>$width,'path' =>$Path]
         ]);
         return $image_id;
-
     }
 
     public function thumbnailrecord($filename,$Path,$width,$height){
@@ -88,19 +75,15 @@ public $sortable =['id','name'];
       ]);
     }
 
-
     public function Mediumrecord($filename,$Path,$width,$height){
         $getimage_id =  DB::table('images')->where('name', $filename)->first();
         $image_id = $getimage_id->id;
         $imagecatedata = DB::table('image_categories')->insert([
             ['image_id' => $image_id, 'image_type' => '4', 'height' =>$height,'width' =>$width,'path' =>$Path]
         ]);
-
     }
 
     public function Largerecord($filename,$Path,$width,$height){
-
-
         $getimage_id =  DB::table('images')->where('name', $filename)->first();
 
         $image_id = $getimage_id->id;
@@ -109,8 +92,6 @@ public $sortable =['id','name'];
             ['image_id' => $image_id, 'image_type' => '3', 'height' =>$height,'width' =>$width,'path' =>$Path, 
             'updated_at'     => date('y-m-d h:i:s')]
         ]);
-
-
 
     }
 
@@ -127,12 +108,7 @@ public $sortable =['id','name'];
         $Medium_height = DB::table('settings')->where('name','Medium_height')->get();
         $Medium_width = DB::table('settings')->where('name','Medium_width')->get();
 
-
         $Mediumsetting = array($Medium_height[0],$Medium_width[0]);
-
-
-
-
         return $Mediumsetting;
     }
 
@@ -141,12 +117,7 @@ public $sortable =['id','name'];
         $Large_height = DB::table('settings')->where('name','Large_height')->get();
         $Large_width = DB::table('settings')->where('name','Large_width')->get();
 
-
         $Largesetting = array($Large_height[0],$Large_width[0]);
-
-
-
-
         return $Largesetting;
     }
 
@@ -164,9 +135,8 @@ public $sortable =['id','name'];
 
     public function imagedelete($id){
         $imagesdetail = DB::table('images')
-
             ->where('images.id',$id)
-             ->delete();
+            ->delete();
 
         $imagesdetailcategories = DB::table('image_categories')
 
@@ -174,7 +144,6 @@ public $sortable =['id','name'];
             ->delete();
         return  $imagesdetailcategories;
     }
-
 
     //regenerate section
     public function regenerate($image_id, $id, $width, $height)
@@ -199,7 +168,6 @@ public $sortable =['id','name'];
             unlink($required_image_full_path);
         }
         
-        
         //get name and path of required image
         $total_string = strlen($required_image_full_path);
         $required_imag_path = substr($required_image_full_path, 0,21);
@@ -207,11 +175,8 @@ public $sortable =['id','name'];
         
         $destinationPath = public_path($required_imag_path);
         $saveimage = Image::make($original_image_path, array(
-
             'width' => $width,
-
             'height' => $height,
-
             'grayscale' => false));
 
         $namethumbnail = $saveimage->save($destinationPath . $filename);
@@ -221,7 +186,7 @@ public $sortable =['id','name'];
         $size = getimagesize($destinationFile);
         list($width, $height, $type, $attr) = $size;
 
-       DB::table('image_categories')->where('id', $id)->update(
+        DB::table('image_categories')->where('id', $id)->update(
         [
             'width'   =>   $width,
             'height'          =>   $height,
@@ -263,12 +228,7 @@ public $sortable =['id','name'];
                     $tuhmbnail = $this->regenerateimages($image_id, $AllImagesSettingData[0]->value, $AllImagesSettingData[1]->value, 'THUMBNAIL');
                     break;
             }
-
         }
-
-        
-
-
     }
 
     //regenerate section
@@ -311,11 +271,8 @@ public $sortable =['id','name'];
         
         $destinationPath = public_path($required_imag_path);
         $saveimage = Image::make($original_image_path, array(
-
             'width' => $width,
-
             'height' => $height,
-
             'grayscale' => false));
 
         $namethumbnail = $saveimage->save($destinationPath . $filename);
@@ -348,6 +305,4 @@ public $sortable =['id','name'];
 
         return $namethumbnail;
     }
-
-    
 }

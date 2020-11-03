@@ -30,7 +30,6 @@ class MediaController extends Controller
         $Images = new Images();
         $images = $Images->getimages();
         $result['commonContent'] = $this->Setting->commonContent();
-
         return view('admin.media.addimages')->with('images', $images)->with('result', $result);
     }
 

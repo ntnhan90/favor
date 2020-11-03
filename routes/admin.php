@@ -207,4 +207,25 @@ Route::group(['prefix' => 'admin','namespace' => 'Admin','middleware' => 'adminC
         Route::post('/updateOrderStatus', 'SiteSettingController@updateOrderStatus');
         Route::post('/deleteOrderStatus', 'SiteSettingController@deleteOrderStatus');
     });
+
+    Route::group(['prefix' => 'newscategories'], function () {
+        Route::get('/', 'NewsCategoriesController@display');
+        Route::get('/add', 'NewsCategoriesController@add');
+        Route::post('/add', 'NewsCategoriesController@insert');
+        Route::get('/edit/{id}', 'NewsCategoriesController@edit');
+        Route::post('/update', 'NewsCategoriesController@update');
+        Route::post('/delete', 'NewsCategoriesController@delete');
+        Route::get('/filter', 'NewsCategoriesController@filter');
+    });
+
+        Route::group(['prefix' => 'admin/news'], function () {
+        Route::get('/', 'NewsController@display');
+        Route::get('/add', 'NewsController@add');
+        Route::post('/add', 'NewsController@insert');
+        Route::get('/edit/{id}', 'NewsController@edit');
+        Route::post('/update', 'NewsController@update');
+        Route::post('/delete', 'NewsController@delete');
+        Route::get('/filter', 'NewsController@filter');
+    });
+
 });

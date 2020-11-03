@@ -24,7 +24,6 @@ class ProductsController extends Controller
     public function index(Request $request){
         $title = array('pageTitle' => Lang::get('website.Product Detail'));
         $result = array();
- 
         $products = $this->products->getProductsBySlug($request->slug);
         if(!empty($products) and count($products)>0){
             $category = $this->products->getCategoryByParent($products[0]->products_id);
