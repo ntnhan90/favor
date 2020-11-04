@@ -10,18 +10,11 @@ abstract class BaseRepository implements BaseInterface
      */
     protected $_model;
 
-    /**
-     * EloquentRepository constructor.
-     */
     public function __construct()
     {
         $this->setModel();
     }
 
-    /**
-     * get model
-     * @return string
-     */
     abstract public function getModel();
 
     public function setModel()
@@ -35,6 +28,9 @@ abstract class BaseRepository implements BaseInterface
     }
 
     public function paginate($limit = null, $columns = array('*')){
+        $limit = is_null($limit) ?  15 : $limit;
+        $results = $this->_model->paginate($limit, $columns);
+        return  $results ;
     }
 
     public function create(array $attributes){
@@ -74,9 +70,9 @@ abstract class BaseRepository implements BaseInterface
 
     }
 
-    public function findWhere( array $where , $columns = array('*')){
+    public function findWhere( array $where ,$conditions,  $columns = array('*')){
         foreach ($where as $field => $value) {
-            $this->_model = $this->_model->where($field,'=',$value);
+            $this->_model = $this->_model->where($field,$conditions,$value);
         }
         $result = $this->_model->get($columns);
 
@@ -98,11 +94,10 @@ abstract class BaseRepository implements BaseInterface
         return $result;
     }
 
-   
 
     public function with($relations)
     {
-        $result = $this->_model->with($relations)->get();
+        $result = $this->_model->with($relations);
         return $result;
     }
 }
